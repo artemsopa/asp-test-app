@@ -1,0 +1,121 @@
+<header class="p-3 bg-dark text-white">
+    <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a routerLink="/products" class="nav-link px-2 text-white">Products</a></li>
+          </ul>
+
+      <div class="d-flex align-items-center">
+        <form class="w-100 me-3">
+          <input type="search" class="form-control" [(ngModel)]="productName" [ngModelOptions]="{standalone: true}" (ngModelChange)="search()" placeholder="Search product..." aria-label="Search">
+        </form>
+
+        <div class="text-end">
+            <button type="button" class="btn btn-outline-light me-2" (click)="logOut()">Logout</button>
+          </div>
+      </div>
+    </div>
+</header>
+
+<div class="container">
+      <div *ngIf="isAdmin" class="admin-cnt">
+        <ng-container *ngIf="!isEdit; else editTemplate" >
+            
+            <form [formGroup]="addForm">
+            <div class="row g-3">
+            <div class="col-12">
+                <label for="text" class="form-label">Name <span class="text-muted">of product</span></label>
+                <input type="text" class="form-control" placeholder="Soccer ball" formControlName="name">
+              </div>
+      
+              <div class="col-12">
+                <label for="number" class="form-label">Price <span class="text-muted">in $</span></label>
+                <input type="number" class="form-control" placeholder="15,2" formControlName="price">
+              </div>
+      
+              <div class="col-12">
+                <label for="number" class="form-label">Quantity</label>
+                <input type="number" class="form-control" placeholder="27" formControlName="quantity">
+              </div>
+      
+              <div class="col-12">
+                  <label for="text" class="form-label">Description</label>
+                  <input type="text" class="form-control" placeholder="Very comfortable!" formControlName="description">
+                </div>
+                
+              <div class="col-12 butt-m">
+                  <input type="button" value="Add new product" class="btn btn-success" (click)="addProduct()" />
+              </div>
+            </div>
+        </form>
+        </ng-container>
+        </div>
+
+      <div class="gst-cnt">
+          <div *ngIf="!isProductEmpty" class="productEmpty">
+              <div>
+          <h1 class="display-3">There are no any product.</h1>
+        </div>
+        </div>
+        <table *ngIf="isProductEmpty" class="table">
+            <thead>
+              <tr>
+                <th (click)="sort('name')" scope="col">Name&nbsp;</th>
+                <th (click)="sort('price')" scope="col">Price</th>
+                <th (click)="sort('quantity')" scope="col">Quantity</th>
+                <th (click)="sort('description')" scope="col">Description</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products | orderBy: name: reverse |paginate: { itemsPerPage: 5, currentPage: paginationNum}">
+                    <td>{{product?.name}}</td>
+                    <td>{{product?.price}}</td>
+                    <td>{{product?.quantity}}</td>
+                    <td>{{product?.description}}</td>
+                    <td>
+                        <input *ngIf="isAdmin" type="button" value="Edit" class="btn btn-warning" (click)="openEdit(product)" />
+                    </td>
+                    <td>
+                        <input *ngIf="isAdmin" type="button" value="Delete" (click)="deleteProduct(product.id)" class="btn btn-danger" />
+                    </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pagination-controls *ngIf="isProductEmpty" (pageChange)="paginationNum = $event"></pagination-controls>
+
+      </div>
+  </div>
+
+  <ng-template #editTemplate>
+    <form [formGroup]="addForm">
+    <div class="row g-3">
+    
+        <div class="col-12">
+          <label for="text" class="form-label">Name <span class="text-muted">of product</span></label>
+          <input type="text" class="form-control" value="{{product.name}}" placeholder="Soccer ball" formControlName="name">
+        </div>
+
+        <div class="col-12">
+          <label for="text" class="form-label">Price <span class="text-muted">in $</span></label>
+          <input type="number" class="form-control" placeholder="15,2" formControlName="price">
+        </div>
+
+        <div class="col-12">
+          <label for="text" class="form-label">Quantity</label>
+          <input type="number" class="form-control" placeholder="27" formControlName="quantity">
+        </div>
+
+        <div class="col-12">
+            <label for="text" class="form-label">Description</label>
+            <input type="text" class="form-control" placeholder="Very comfortable!" formControlName="description">
+          </div>
+          <div class="col-12 butt-m">
+            <input type="button" value="Save" (click)="editProduct()" class="btn btn-primary" />
+            <input type="button" value="Cancel" (click)="cancel()" class="btn btn-danger" />
+          </div>
+
+      </div>
+      </form>
+  </ng-template>

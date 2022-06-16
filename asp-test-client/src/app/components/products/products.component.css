@@ -1,0 +1,51 @@
+.cnt-body {
+    margin-bottom: 20px;
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100%;
+}
+
+
+.admin-cnt {
+    margin-right: 20px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ededed;
+    width: 450px;
+    height: 430px;
+    padding: 20px;
+}
+
+.gst-cnt {
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ededed;
+    width: 100%;
+    padding: 20px;
+}
+
+table tr td.td2:last-child {
+    word-break: break-word;
+    width: 100%;
+}
+
+table th{
+    cursor: pointer;
+}
+
+.butt-m {
+    display: flex;
+    justify-content: space-around;
+}
+
+.productEmpty {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+    padding: 10px;
+}
